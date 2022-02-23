@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Group;
+use App\Models\Style;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -59,13 +60,13 @@ class AdminController extends Controller
 
         // $styles = DB::select('SELECT s.*, u.name FROM styles AS s INNER JOIN users AS u ON s.author_id = u.id');
         
-        $styles = \App\Models\Style::with('author')
-                ->when($request->has('archive'), function($query) {
-                    $query->onlyTrashed();
-                })
+        // $styles = \App\Models\Style::with('author')
+        //         ->when($request->has('archive'), function($query) {
+        //             $query->onlyTrashed();
+        //         })
 
-                ->get();
-        
+        //         ->get();
+        $styles = Style::with('author')->get();
         
         // $styles = DB::select('SELECT * FROM styles ORDER BY id DESC');
         return view('dashboard.admin.styles', compact('styles'));
@@ -76,7 +77,34 @@ class AdminController extends Controller
 
         $style->delete();
 
-        return redirect()->route('admin.styles')->with('success', $style->style_code. 'has been deleted.');
+        return redirect()->route('admin.styles')->with('success', $style->style_code. ' has been deleted.');
+
+    }
+
+    public function restoreStyle($id) {
+
+        $style = Style::onlyTrashed()->findOrFail($id);
+
+        $style->restore();
+
+        return redirect()->route('admin.style_archive')->with('success', $style->style_code.' item has been restored.');
+
+    }
+
+    public function deleteStyle($id) {
+        $style = Style::onlyTrashed()->findOrFail($id);
+        $style->forceDelete();
+
+        return redirect()->route('admin.style_archive')->with('success', $style->style_code .' has been deleted. ');
+
+    }
+
+    public function viewArchive(  ) {
+
+        $archives = \App\Models\Style::with('author')->onlyTrashed()->get();
+
+        return view('dashboard.admin.archive', compact('archives'));
+
 
     }
 
@@ -89,7 +117,10 @@ class AdminController extends Controller
         return view('dashboard.admin.user', compact('users'));
     }
 
-    public function record() { return view('dashboard.admin.group'); }
+    public function record() { 
+        return view('dashboard.admin.group'); 
+    }
+
     public function storeGroup(Request $request) {
 
         $request->validate([

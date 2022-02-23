@@ -20,12 +20,12 @@ Route::get('/', function () {
 
 Auth::routes();
 
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-// Route::get('/user', [App\Http\Controllers\UserController::class, 'index'])->name('user')->middleware('auth');
-// Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])->name('admin')->middleware('isAdmin');
+Route::get('/test', [\App\Http\Controllers\AdminController::class, 'viewArchive']);
 
-
-Route::get('/test', [\App\Http\Controllers\AdminController::class, 'showStyle']);
+// restore archive
+Route::patch('/style/{id}/restore', [\App\Http\Controllers\AdminController::class, 'restoreStyle'])->name('style_restore');
+// delete archive
+Route::delete('/style/{id}/delete', [\App\Http\Controllers\AdminController::class, 'deleteStyle'])->name('style_delete');
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'isAdmin'], 'as' => 'admin.'], function(){
     Route::view('/', 'dashboard.admin.index')->name('home');
@@ -44,7 +44,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'isAdmin'], 'as' => 
     // softdelete
     Route::delete('/style/{style}', [\App\Http\Controllers\AdminController::class, 'styleSoftdelete'])->name('style_delete');
     // archive
-    Route::get('/style/{style}/archive', [\App\Http\Controllers\AdminController::class, 'viewArchive'])->name('style_archive');
+    Route::get('/style/archive', [\App\Http\Controllers\AdminController::class, 'viewArchive'])->name('style_archive');
+
 });
 
 Route::group(['prefix' => 'gpro', 'middleware' => ['auth','access'], 'as' => 'gpro.'], function() {

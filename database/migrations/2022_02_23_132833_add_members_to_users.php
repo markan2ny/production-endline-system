@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddAuthorToStylesTable extends Migration
+class AddMembersToUsers extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class AddAuthorToStylesTable extends Migration
      */
     public function up()
     {
-        Schema::table('styles', function (Blueprint $table) {
-            $table->unsignedBigInteger('author_id')->after('id');
-            $table->foreign('author_id')->references('id')->on('users')->onDelete('cascade');
+        Schema::table('users', function (Blueprint $table) {
+            $table->unsignedBigInteger('member_of')->after('id')->nullable();
+            $table->foreign('member_of')->references('id')->on('users');
         });
     }
 
@@ -26,8 +26,8 @@ class AddAuthorToStylesTable extends Migration
      */
     public function down()
     {
-        Schema::table('styles', function (Blueprint $table) {
-            //
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('member_of');
         });
     }
 }

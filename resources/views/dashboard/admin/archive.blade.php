@@ -1,19 +1,16 @@
 @extends('layouts.app')
 @section('content')
-
 <div class="row">
     <div class="col-lg-12 col-12">
-        @if ( Session::get('success') )
-            <div class="alert alert-success mt-2"> {{ Session::get('success') }} </div>
-        @elseif( Session::get('error') )
-            <div class="alert alert-danger mt-2"> {{ Session::get('error') }}</div>
+        @if (Session::has('success'))
+            <div class="alert alert-success">{{ Session::get('success') }}</div>
         @endif
+
         <div class="card">
             <div class="card-header d-flex justify-content-between">
-                <h4 class="m-0 fw-lighter d-inline">{{ __('Styles')}}</h4>
+                <h4 class="m-0 fw-lighter d-inline">{{ __('Archive')}}</h4>
                 <div>
-                    <a href="{{ route('admin.style_archive') }}" class="btn btn-sm btn-danger">{{ __('View Archive') }}</a>
-                    <a href="{{ route('admin.create.style') }}" class="btn btn-sm btn-success">{{ __('Add new style') }}</a>
+                    <a href="{{ route('admin.styles') }}" class="btn btn-sm btn-danger">{{ __('Back') }}</a>
                 </div>
             </div>
             <div class="card-body">
@@ -33,23 +30,26 @@
                         @php
                             $count = 1;
                         @endphp
-                        @forelse ($styles as $style)
+                        @forelse ($archives as $archive)
                             <tr>
                                 <td>{{ $count }}</td>
-                                <td>{{ $style->style_code }}</td>
-                                <td>{{ $style->style_desc }}</td>
-                                <td>{{ $style->quota }}</td>
-                                <td>{{ $style->author->name }}</td>
-                                <td>{{ $style->created_at }}</td>
+                                <td>{{ $archive->style_code }}</td>
+                                <td>{{ $archive->style_code }}</td>
+                                <td>{{ $archive->quota }}</td>
+                                <td>{{ $archive->author->name }}</td>
+                                <td>{{ $archive->created_at }}</td>
                                 <td>
-                                    <form action="{{ route('admin.style_delete', $style->id)}}" method="POST" class="d-inline" onsubmit="return confirm('Do you want to delete this style?')">
+                                    <form action="{{ route('style_restore', $archive->id) }}" method="post" class="d-inline" onsubmit="return confirm('Do you want to restore this style?')">
+                                        @csrf
+                                        @method('patch')
+                                        <button type="submit" class="btn btn-sm btn-success">Restore</button>
+                                    </form>
+                                    <form action="{{ route('style_delete', $archive->id) }}" method="post" class="d-inline" onsubmit="return confirm('Do you want to Force delete this style?')">
                                         @csrf
                                         @method('DELETE')
-
-                                        <button type="submit" class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i></button>
-
+                                        <button type="submit" class="btn btn-sm btn-danger">Force Delete</button>
                                     </form>
-                                    <a href="#" class="btn btn-primary btn-sm"><i class="fa-solid fa-pen"></i></a>
+                               
                                 </td>
                             </tr>
                         @php
@@ -66,5 +66,4 @@
         </div>
     </div>
 </div>
-
 @endsection
