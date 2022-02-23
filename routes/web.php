@@ -42,15 +42,16 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'isAdmin'], 'as' => 
     Route::post('/group/create', [\App\Http\Controllers\AdminController::class, 'storeGroup'])->name('store.group');
 
     // softdelete
-    Route::delete('/style/{style}', [\App\Http\Controllers\AdminController::class, 'styleSoftdelete'])->name('style_delete');
+    Route::delete('/{style}/style', [\App\Http\Controllers\AdminController::class, 'styleSoftdelete'])->name('style_delete');
     // archive
     Route::get('/style/archive', [\App\Http\Controllers\AdminController::class, 'viewArchive'])->name('style_archive');
 
 });
 
 Route::group(['prefix' => 'gpro', 'middleware' => ['auth','access'], 'as' => 'gpro.'], function() {
-    Route::get('/', [\App\Http\Controllers\GproController::class, 'group'])->name('home');
+    Route::get('/', [\App\Http\Controllers\GproController::class, 'home'])->name('home');
     // Pass the style id to the next record page.
-    Route::get('/record/{id}', [\App\Http\Controllers\GproController::class, 'record'])->name('record');
-    Route::get('/group', [\App\Http\Controllers\GproController::class, 'record'])->name('record');
+    Route::get('/{id}/record', [\App\Http\Controllers\GproController::class, 'record'])->name('record');
+    Route::post('/{id}/record', [\App\Http\Controllers\GproController::class, 'storeRecord'])->name('store_record');
+    Route::get('/queue', [\App\Http\Controllers\GproController::class, 'queue'])->name('record_queue');
 });

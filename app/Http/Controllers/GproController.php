@@ -7,23 +7,22 @@ use Illuminate\Support\Facades\DB;
 
 class GproController extends Controller
 {
-    public function group(){
-        // Group of Production
-        $groups = DB::select('SELECT * FROM groups WHERE isHide = 0 ORDER BY created_at DESC');
-        return view('dashboard.gpro.group', compact('groups'));
-    }
-    public function storeGroup(Request $request) {
-        $request->validate([
-            'group_name' => ['required'],
-            'group_desc' => ['required'],
-        ]);
 
+    public function home() {
 
+        $styles = \App\Models\Style::orderBy('id', 'desc')->get();
+
+        return view('dashboard.gpro.style_table', compact('styles'));
     }
 
     public function record($id) {
         // Working on style
-        $data = DB::select("SELECT * FROM styles WHERE id = $id LIMIT 1");
+        $data = \App\Models\Style::findOrFail($id)->first();
+
         return view('dashboard.gpro.record', compact('data'));
+    }
+
+    public function storeRecord(Request $request) {
+        dd($request->all());
     }
 }

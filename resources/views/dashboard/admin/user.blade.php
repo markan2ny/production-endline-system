@@ -8,7 +8,7 @@
        @endif
         <div class="card">
             <div class="card-header d-flex justify-content-between">
-                <h4 class="fw-lighter m-0 d-inline">{{ __('Create an Account')}}</h4>
+                <h4 class="fw-lighter m-0 d-inline">{{ __('User Table')}}</h4>
                 <a href="{{ route('admin.create.user') }}" class="btn btn-success btn-sm">{{ __('Add new user') }}</a>
             </div>
             <div class="card-body">

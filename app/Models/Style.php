@@ -15,9 +15,10 @@ class Style extends Model
     protected $fillable = ['style_code', 'style_desc', 'Auth'];
 
     public function author() {
-
         return $this->belongsTo(\App\Models\User::class, 'author_id', 'id');
-
+    }
+    public function user() {
+        return $this->hasOne(\App\Models\User::class, 'user_id', 'id');
     }
 
 }

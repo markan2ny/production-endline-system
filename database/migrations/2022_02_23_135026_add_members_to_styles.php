@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddMembersToUsers extends Migration
+class AddMembersToStyles extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class AddMembersToUsers extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->unsignedBigInteger('member_of')->after('id')->nullable();
-            $table->foreign('member_of')->references('id')->on('users');
+        Schema::table('styles', function (Blueprint $table) {
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -26,8 +26,8 @@ class AddMembersToUsers extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('member_of');
+        Schema::table('styles', function (Blueprint $table) {
+            $table->dropColumn('user_id');
         });
     }
 }
