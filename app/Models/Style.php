@@ -12,7 +12,7 @@ class Style extends Model
 
     protected $dates = ['deleted_at'];
 
-    protected $fillable = ['style_code', 'style_desc', 'Auth'];
+    protected $fillable = ['style_code', 'style_desc', 'author'];
 
     public function author() {
         return $this->belongsTo(\App\Models\User::class, 'author_id', 'id');

@@ -50,7 +50,7 @@ class LoginController extends Controller
                 return redirect()->route('gpro.home');
             }
         }else {
-            return redirect()->route('login')->with('fail', 'Invalid Credential.');
+            return redirect()->route('login')->with('error', 'Invalid Credential.');
         }
 
     }

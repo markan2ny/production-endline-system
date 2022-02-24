@@ -1,6 +1,9 @@
 @extends('layouts.app')
+@push('styles')
+    {{-- <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.css"> --}}
+    <link rel="stylesheet" href="{{ asset('/vendor/css/jquery.dataTables.css') }}">
+@endpush
 @section('content')
-
 <div class="row">
     <div class="col-lg-8 offset-lg-2">
         @if(Session::has('success'))
@@ -12,7 +15,7 @@
                 <a href="{{ route('admin.create.user') }}" class="btn btn-success btn-sm">{{ __('Add new user') }}</a>
             </div>
             <div class="card-body">
-                <table class="table stripped-table" id="table">
+                <table class="table stripped-table" id="mytable">
                     <thead>
                         <tr>
                             <th>{{ __('Name') }}</th>
@@ -23,7 +26,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                       @forelse ($users as $user)
+                       @foreach ($users as $user)
                            <tr>
                                <td>{{ $user->name }}</td>
                                <td>{{ $user->email }}</td>
@@ -34,11 +37,7 @@
                                    <a href="#" class="btn btn-sm btn-primary"><i class="fa-solid fa-eye"></i></a>
                                </td>
                            </tr>
-                       @empty
-                           <tr>
-                               <td colspan="5"><h1 class="text-muted fw-lighter text-center">NO DATA</h1></td>
-                           </tr>
-                       @endforelse
+                       @endforeach
                     </tbody>
                 </table>
             </div>
@@ -47,3 +46,12 @@
 </div>
 
 @endsection
+@push('javascripts')
+    {{-- <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script> --}}
+    <script src="{{ asset('/vendor/js/jquery.dataTables.js') }}"></script>
+    <script>
+        $(document).ready( function () {
+            $('#mytable').DataTable();
+        });
+    </script>
+@endpush

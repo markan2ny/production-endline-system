@@ -112,8 +112,6 @@ class AdminController extends Controller
 
        $users = DB::select('SELECT u.name, u.email, g.group_name as department FROM users AS u INNER JOIN groups AS g ON u.assigned_id = g.id ORDER BY u.id DESC');
 
-    //    return DataTables::of($users)->make(true);
-
         return view('dashboard.admin.user', compact('users'));
     }
 

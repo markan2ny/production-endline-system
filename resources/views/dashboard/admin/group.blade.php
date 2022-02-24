@@ -1,4 +1,8 @@
 @extends('layouts.app')
+@push('styles')
+    {{-- <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.css"> --}}
+    <link rel="stylesheet" href="{{ asset('/vendor/css/jquery.dataTables.css') }}">
+@endpush
 @section('content')
     <div class="row">
         <div class="col-lg-8 offset-lg-2">
@@ -11,7 +15,7 @@
                     <a href="{{ route('admin.create.group') }}" class="btn btn-success btn-sm">{{ __('Add new group') }}</a>
                 </div>
                 <div class="card-body">
-                    <table class="table stripped-table">
+                    <table class="table stripped-table" id="mytable">
                         <thead>
                             <tr>
                                 <th>{{ __('No.')}}</th>
@@ -25,7 +29,7 @@
                             @php
                                 $count = 1;
                             @endphp
-                            @forelse ($groups as $group)
+                            @foreach ($groups as $group)
                                 <tr>
                                     <td>{{ $count }}</td>
                                     <td>{{ $group->group_name }}</td>
@@ -39,11 +43,7 @@
                             @php
                                 $count++;
                             @endphp
-                            @empty
-                                <tr>
-                                    <td colspan="4"><h1 class="fw-lighter m-0 text-center m-2">NO DATA</h1></td>
-                                </tr>
-                            @endforelse
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -51,3 +51,12 @@
         </div>
     </div>
 @endsection
+@push('javascripts')
+    {{-- <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script> --}}
+    <script src="{{ asset('/vendor/js/jquery.dataTables.js') }}"></script>
+    <script>
+        $(document).ready( function () {
+            $('#mytable').DataTable();
+        });
+    </script>
+@endpush

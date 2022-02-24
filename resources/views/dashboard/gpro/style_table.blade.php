@@ -1,26 +1,30 @@
 @extends('layouts.app')
+@push('styles')
+    {{-- <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.css"> --}}
+    <link rel="stylesheet" href="{{ asset('/vendor/css/jquery.dataTables.css') }}">
+@endpush
 @section('content')
     <div class="row">
         <div class="col-lg-8 offset-lg-2">
             <div class="card">
-                <div class="card-header">
-                    <h4 class="m-0 fw-lighter">Style Table</h4>
+                <div class="card-header bg-primary text-white">
+                    <h4 class="m-0 fw-lighter">{{ __('Style Table') }}</h4>
                 </div>
                 <div class="card-body">
-                    <table class="table table-hover">
+                    <table class="table table-hover" id="mytable">
                         <thead>
                             <tr>
-                                <th>No.</th>
-                                <th>Style Code</th>
-                                <th>Style Description</th>
-                                <th>target Quota</th>
+                                <th>{{ __('No.') }}</th>
+                                <th>{{ __('Style Code') }}</th>
+                                <th>{{ __('Style Description') }}</th>
+                                <th>{{ __('target Quota') }}</th>
                             </tr>
                         </thead>
                         <tbody>
                             @php
                                 $count = 1;
                             @endphp
-                           @forelse ($styles as $style)
+                           @foreach ($styles as $style)
                                <tr>
                                    <td>{{ $count }}</td>
                                    <td>
@@ -32,13 +36,7 @@
                             @php
                                 $count++;
                             @endphp
-                           @empty
-                               <tr>
-                                   <td colspan="4">
-                                       <h1 class="fw-lighter m-0 text-center text-muted">NO DATA</h1>
-                                   </td>
-                               </tr>
-                           @endforelse
+                           @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -46,3 +44,12 @@
         </div>
     </div>    
 @endsection
+@push('javascripts')
+    {{-- <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script> --}}
+    <script src="{{ asset('/vendor/js/jquery.dataTables.js') }}"></script>
+    <script>
+        $(document).ready( function () {
+            $('#mytable').DataTable();
+        });
+    </script>
+@endpush
