@@ -24,13 +24,6 @@
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
-                    <div class="form-group">
-                        <label for="description">{{ __('Description') }}</label>
-                        <input type="text" name="style_desc" class="form-control" id="description" placeholder="Enter Style Description">
-                        @error('style_desc')
-                            <small class="text-danger">{{ $message }}</small>
-                        @enderror
-                    </div>
                     <button type="submit" class="btn btn-primary mt-2">{{ __('Submit') }}</button>
                 </form>
             </div>

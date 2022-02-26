@@ -37,7 +37,7 @@ class GproController extends Controller
             'qty' => ['required']
         ]);
 
-        $insert = \App\Models\Record::insert([
+        \App\Models\Record::insert([
             'date_time' => $request->date,
             'bundle_tag' => $request->bundle_tag,
             'operator' => $request->operator,
@@ -47,9 +47,13 @@ class GproController extends Controller
         ]);
 
         return redirect()->route('gpro.record', $id)->with('success', 'New entry has been added.');
-
-        
-    
    
     }
+
+    public function models($id){
+
+        $models = DB::select("SELECT s.style_code, sm.* FROM style_models AS sm INNER JOIN styles AS s ON s.id = sm.style_id WHERE sm.style_id = $id");
+        return view('dashboard.gpro.get_model', compact('models'));
+
+    } 
 }

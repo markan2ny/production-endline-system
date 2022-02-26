@@ -2,7 +2,6 @@
 @push('styles')
     {{-- <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.css"> --}}
     <link rel="stylesheet" href="{{ asset('/vendor/datatables/jquery.dataTables.css') }}">
-
 @endpush
 @section('content')
 <div class="row">
@@ -26,10 +25,8 @@
                         <tr>
                             <th>{{ __('No.')}}</th>
                             <th>{{ __('Style Code')}}</th>
-                            <th>{{ __('Style Description')}}</th>
                             <th>{{ __('Target Quota')}}</th>
                             <th>{{ __('Author')}}</th>
-                            <th>{{ __('Created At')}}</th>
                             <th>{{ __('Action')}}</th>
                         </tr>
                     </thead>
@@ -40,18 +37,14 @@
                         @foreach ($styles as $style)
                             <tr>
                                 <td>{{ $count }}</td>
-                                <td>{{ $style->style_code }}</td>
-                                <td>{{ $style->style_desc }}</td>
+                                <td><a href="{{ route('admin.fetch_style_model', $style->id)}}">{{ $style->style_code }}</a></td>
                                 <td>{{ $style->quota }}</td>
                                 <td>{{ $style->author->name }}</td>
-                                <td>{{ $style->created_at }}</td>
                                 <td>
                                     <form action="{{ route('admin.style_delete', $style->id)}}" method="POST" class="d-inline" onsubmit="return confirm('Do you want to delete this style?')">
                                         @csrf
                                         @method('DELETE')
-
                                         <button type="submit" class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i></button>
-
                                     </form>
                                     <a href="#" class="btn btn-primary btn-sm"><i class="fa-solid fa-pen"></i></a>
                                 </td>

@@ -16,7 +16,6 @@
                             <tr>
                                 <th>{{ __('No.') }}</th>
                                 <th>{{ __('Style Code') }}</th>
-                                <th>{{ __('Style Description') }}</th>
                                 <th>{{ __('target Quota') }}</th>
                             </tr>
                         </thead>
@@ -26,11 +25,10 @@
                             @endphp
                            @foreach ($styles as $style)
                                <tr>
-                                   <td>{{ $count }}</td>
+                                   <td width="10%">{{ $count }}</td>
                                    <td>
-                                       <a href="{{ route('gpro.record', $style->id) }}">{{ $style->style_code}}</a>
+                                       <a href="{{ route('gpro.model', $style->id) }}">{{ $style->style_code}}</a>
                                    </td>
-                                   <td>{{ $style->style_desc}}</td>
                                    <td>{{ $style->quota}}</td>
                                </tr>
                             @php
