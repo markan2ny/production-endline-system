@@ -1,4 +1,8 @@
 @extends('layouts.app')
+@push('styles')
+    {{-- <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.css"> --}}
+    <link rel="stylesheet" href="{{ asset('/vendor/datatables/jquery.dataTables.css') }}">
+@endpush
 @section('content')
 <div class="row">
     <div class="col-lg-12 col-12">
@@ -14,7 +18,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <table class="table table-hover">
+                <table class="table table-hover" id="mytable">
                     <thead>
                         <tr>
                             <th>{{ __('No.')}}</th>
@@ -67,3 +71,12 @@
     </div>
 </div>
 @endsection
+@push('javascripts')
+    {{-- <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script> --}}
+    <script src="{{ asset('/vendor/datatables/jquery.dataTables.js') }}"></script>
+    <script>
+        $(document).ready( function () {
+            $('#mytable').DataTable();
+        });
+    </script>
+@endpush

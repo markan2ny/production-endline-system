@@ -2,11 +2,14 @@
 
 @push('styles')
     {{-- <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.css"> --}}
-    <link rel="stylesheet" href="{{ asset('/vendor/css/jquery.dataTables.css') }}">
+    <link rel="stylesheet" href="{{ asset('/vendor/datatables/jquery.dataTables.css') }}">
 @endpush
 
 @section('content')
 <div class="row">
+    @if (Session::has('success'))
+        <div class="alert alert-success">{{ Session::get('success') }}</div>
+    @endif
     <div class="col-lg-4 col-12">
         <div class="card">
             <div class="card-header bg-primary d-flex justify-content-between">
@@ -16,10 +19,10 @@
                     <span id="minutes">--</span>
                     <span id="seconds">--</span>
                 </div>
-                <a href="{{ route('gpro.home') }}" class="text-decoration-none text-white">{{ $data->style_code }}</a>
+                <a href="{{ route('gpro.home') }}" class="text-decoration-none text-white">{{ $data[0]->style_code }}</a>
             </div>
             <div class="card-body">
-                <form action="{{ route('gpro.store_record', $data->id) }}" method="POST">
+                <form action="{{ route('gpro.store_record', $data[0]->id) }}" method="POST" id="submit-record">
                     @csrf
                     <div class="row">
                     
@@ -27,18 +30,27 @@
                             <div class="form-group">
                                 <label class="text-muted">Date:</label>
                                 <input type="date" name="date" class="form-control">
+                                @error('date')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                         <div class="col-lg-12 col-12">
                             <div class="form-group my-2">
                                 <label class="text-muted">Bundle Tag:</label>
                                 <input type="number" min="0" name="bundle_tag" class="form-control" placeholder="Enter bundle tag">
+                                @error('bundle_tag')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                         <div class="col-lg-12 col-12">
                             <div class="form-group">
                                 <label class="text-muted">Operation:</label>
-                                <input type="text" class="form-control" name="operation" placeholder="Enter operation number">
+                                <input type="number" min="0" class="form-control" name="operation" placeholder="Enter operation number">
+                                @error('operation')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                         <div class="col-lg-12 col-12 my-1">
@@ -52,12 +64,18 @@
                                     <option value="#">Sample</option>
                                     <option value="#">Sample</option>
                                 </select>
+                                @error('operator')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                         <div class="col-lg-12 col-12 mb-3">
                             <div class="form-group">
                                 <label class="text-muted">Quantity:</label>
-                                <input type="number" min="0" name="quantity" class="form-control" placeholder="Enter operation number">
+                                <input type="number" min="0" name="qty" class="form-control" placeholder="Enter operation number">
+                                @error('qty')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                     </div>
@@ -96,6 +114,30 @@
                             </th>
                         </tr>
                     </thead>
+                    <tbody>
+                        @php
+                            $count = 1;
+                        @endphp
+                        @foreach ($records as $record)
+                            <tr>
+                                <td>{{ $count }}</td>
+                                <td>{{ $record->bundle_tag }}</td>
+                                <td>{{ $record->operator }}</td>
+                                <td>{{ $record->operation }}</td>
+                                <td>{{ $record->qty }}</td>
+                                <td>
+                                    <form action="#" method="post" class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @php
+                            $count++;
+                        @endphp
+                        @endforeach
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -105,10 +147,12 @@
 @endsection
 @push('javascripts')
     {{-- <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script> --}}
-    <script src="{{ asset('/vendor/js/jquery.dataTables.js') }}"></script>
+    <script src="{{ asset('/vendor/datatables/jquery.dataTables.js') }}"></script>
     <script>
-        $(document).ready( function () {
+
+        $( function () {
             $('#mytable').DataTable();
-        });
+        })
+
     </script>
 @endpush

@@ -17,6 +17,7 @@
                 <li class="mx-2"><a href="{{ route('admin.user') }}">{{ __('Manage Users') }}</a></li>
                 <li class="mx-2"><a href="{{ route('admin.styles') }}">{{ __('Manage Styles') }}</a></li>
                 <li class="mx-2"><a href="{{ route('admin.group') }}">{{ __('Manage Group') }}</a></li>
+                <li class="mx-2"><a href="{{ route('admin.group') }}">{{ __('Operators') }}</a></li>
             @endif
         </ul>
         @endauth

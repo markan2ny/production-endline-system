@@ -20,7 +20,10 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
     <!-- DataTables-->
-    {{-- <link rel="stylesheet" href="{{ asset('/vendor/css/datatables.min.css')}}"> --}}
+    <link rel="stylesheet" href="{{ asset('/datatable/css/dataTables.bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('/datatable/css/dataTables.bootstrap4.min.css')}}">
+    <!-- Toastr-->
+    <link rel="stylesheet" href="{{ asset('/vendor/toastr/toastr.min.css')}}">
     @stack('styles')
 </head>
 <body>
@@ -30,8 +33,11 @@
             @yield('content')
         </div>
     </div>
-    <script src="{{ asset('/vendor/jquery/jquery-3.2.1.js')}}"></script>
+    <script src="{{ asset('/vendor/js/jquery.min.js')}}"></script>
     {{-- <script src="https://code.jquery.com/jquery-3.2.1.js"></script> --}}
+    <script src="{{ asset('/datatable/js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{ asset('/datatable/js/dataTables.bootstrap4.min.js')}}"></script>
+    <script src="{{ asset('/vendor/toastr/toastr.min.js')}}"></script>
     <script src="{{ asset('/vendor/js/all.min.js')}}"></script>
     <script src="{{ asset('/js/main.js')}}"></script>
     @stack('javascripts')

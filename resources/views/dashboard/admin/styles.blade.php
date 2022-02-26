@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @push('styles')
     {{-- <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.css"> --}}
-    <link rel="stylesheet" href="{{ asset('/vendor/css/jquery.dataTables.css') }}">
+    <link rel="stylesheet" href="{{ asset('/vendor/datatables/jquery.dataTables.css') }}">
 
 @endpush
 @section('content')
@@ -70,7 +70,7 @@
 @endsection
 @push('javascripts')
     {{-- <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script> --}}
-    <script src="{{ asset('/vendor/js/jquery.dataTables.js') }}"></script>
+    <script src="{{ asset('/vendor/datatables/jquery.dataTables.js') }}"></script>
     <script>
         $(document).ready( function () {
             $('#mytable').DataTable();
