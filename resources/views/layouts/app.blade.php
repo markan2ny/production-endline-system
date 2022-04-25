@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Production System') }}</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -25,6 +25,7 @@
     <!-- Toastr-->
     <link rel="stylesheet" href="{{ asset('/vendor/toastr/toastr.min.css')}}">
     @stack('styles')
+    @livewireStyles
 </head>
 <body>
     <div id="app">
@@ -34,12 +35,10 @@
         </div>
     </div>
     <script src="{{ asset('/vendor/js/jquery.min.js')}}"></script>
-    {{-- <script src="https://code.jquery.com/jquery-3.2.1.js"></script> --}}
+    @stack('javascripts')
     <script src="{{ asset('/datatable/js/jquery.dataTables.min.js')}}"></script>
     <script src="{{ asset('/datatable/js/dataTables.bootstrap4.min.js')}}"></script>
-    <script src="{{ asset('/vendor/toastr/toastr.min.js')}}"></script>
     <script src="{{ asset('/vendor/js/all.min.js')}}"></script>
-    <script src="{{ asset('/js/main.js')}}"></script>
-    @stack('javascripts')
+    @livewireScripts
 </body>
 </html>

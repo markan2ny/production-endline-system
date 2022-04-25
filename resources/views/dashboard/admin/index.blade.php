@@ -2,17 +2,76 @@
 @section('content')
    
     <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-header bg-primary">
-                    <h1 class="fw-lighter m-0 text-white">Hi, {{ Auth::user()->name }}</h1>
-                </div>
-                <div class="card-body">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa deleniti illo doloribus magnam, perspiciatis quidem dolorum provident sunt eum voluptatibus!</p>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Velit, odit!</p>
-                </div>
+        <div class="col">
+          <!-- BAR CHART -->
+          <div class="card card-success">
+            <div class="card-header bg-primary text-white">
+              <h3 class="card-title m-0">Monthly Report</h3>
             </div>
+          <div class="card-body">
+            <div class="chart">
+              <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+            </div>
+          </div>
+          <!-- /.card-body -->
         </div>
+      </div>
     </div>
+@push('javascripts')
+  <script src="{{ asset('/vendor/js/jquery.min.js')}}"></script>
+  <script src="{{ asset('/plugins/chartjs/Chart.min.js') }}"></script>
+  <script>
+    $(function() {
 
+      var areaChartData = {
+      labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August'],
+      datasets: [
+        {
+          label               : 'Goods',
+          backgroundColor     : 'rgba(60,141,188,0.9)',
+          borderColor         : 'rgba(60,141,188,0.8)',
+          pointRadius          : false,
+          pointColor          : '#3b8bba',
+          pointStrokeColor    : 'rgba(60,141,188,1)',
+          pointHighlightFill  : '#fff',
+          pointHighlightStroke: 'rgba(60,141,188,1)',
+          data                : [99, 48, 40, 19, 86, 27, 90]
+        },
+        {
+          label               : 'Bads',
+          backgroundColor     : 'rgba(210, 214, 222, 1)',
+          borderColor         : 'rgba(210, 214, 222, 1)',
+          pointRadius         : false,
+          pointColor          : 'rgba(210, 214, 222, 1)',
+          pointStrokeColor    : '#c1c7d1',
+          pointHighlightFill  : '#fff',
+          pointHighlightStroke: 'rgba(220,220,220,1)',
+          data                : [65, 59, 80, 81, 56, 55, 40]
+        },
+      ]
+    }
+
+
+      var barChartCanvas = $('#barChart').get(0).getContext('2d')
+      var barChartData = $.extend(true, {}, areaChartData)
+      var temp0 = areaChartData.datasets[0]
+      var temp1 = areaChartData.datasets[1]
+      barChartData.datasets[0] = temp1
+      barChartData.datasets[1] = temp0
+
+      var barChartOptions = {
+        responsive              : true,
+        maintainAspectRatio     : false,
+        datasetFill             : false
+      }
+
+      new Chart(barChartCanvas, {
+        type: 'bar',
+        data: barChartData,
+        options: barChartOptions
+      })
+
+    })
+  </script>
+@endpush
 @endsection

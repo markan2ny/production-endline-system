@@ -5,15 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class StyleModel extends Model
+class ModelEntry extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['model_name', 'style_id'];
+    protected $fillable = ['mo','style_id'];
 
-    public function getStyle() {
-
+    public function style() {
         return $this->belongsTo(\App\Models\Style::class, 'style_id', 'id');
-
     }
 }

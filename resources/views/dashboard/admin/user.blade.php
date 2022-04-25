@@ -10,7 +10,7 @@
             <div class="alert alert-success"> {{ Session::get('success') }}</div>
        @endif
         <div class="card">
-            <div class="card-header d-flex justify-content-between">
+            <div class="card-header bg-primary text-white d-flex justify-content-between">
                 <h4 class="fw-lighter m-0 d-inline">{{ __('User Table')}}</h4>
                 <a href="{{ route('admin.create.user') }}" class="btn btn-success btn-sm">{{ __('Add new user') }}</a>
             </div>
@@ -33,8 +33,12 @@
                                <td>{{ $user->department }}</td>
                                <td><span class="badge bg-success fw-light">Active</span></td>
                                <td>
-                                   <a href="#" class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i></a>
                                    <a href="#" class="btn btn-sm btn-primary"><i class="fa-solid fa-eye"></i></a>
+                                   <form method="POST" action="{{ route('admin.delete.user', $user->id)}}" class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')"><i class="fa-solid fa-trash"></i></button>
+                                   </form>
                                </td>
                            </tr>
                        @endforeach

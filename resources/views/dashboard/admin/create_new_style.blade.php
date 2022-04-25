@@ -11,20 +11,20 @@
                 <form method="POST" action="{{ route('admin.store.style') }}">
                     @csrf
                     <div class="form-group">
-                        <label for="style">{{ __('Style Code') }}</label>
+                        <label for="style">{{ __('S.O') }}</label>
                         <input type="text" name="style_code" class="form-control" id="style" placeholder="Enter Style Code">
                         @error('style_code')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
-                    <div class="form-group">
-                        <label for="quota">{{ __('Target Quota') }}</label>
+                    <div class="form-group mt-3">
+                        <label for="quota">{{ __('Quota per day') }}</label>
                         <input type="number" name="quota" class="form-control" id="quota" min="0" placeholder="Enter Target Quota">
                         @error('quota')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
-                    <button type="submit" class="btn btn-primary mt-2">{{ __('Submit') }}</button>
+                    <button type="submit" class="btn btn-primary mt-4">{{ __('Submit') }}</button>
                 </form>
             </div>
         </div>

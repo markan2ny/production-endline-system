@@ -23,7 +23,7 @@
                                 <tr>
                                     <td>{{ $model->model_name}}</td>
                                     <td>
-                                        <a href="#" class="btn btn-sm btn-primary"><i class="fa-solid fa-file-import"></i></a>
+                                        <a href="{{ route('gpro.record', $model->id) }}" class="btn btn-sm btn-primary"><i class="fa-solid fa-file-import"></i></a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -35,7 +35,6 @@
     </div>
 @endsection
 @push('javascripts')
-    {{-- <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script> --}}
     <script src="{{ asset('/vendor/datatables/jquery.dataTables.js') }}"></script>
     <script>
         $(document).ready( function () {

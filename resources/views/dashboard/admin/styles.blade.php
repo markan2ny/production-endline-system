@@ -12,10 +12,10 @@
             <div class="alert alert-danger mt-2"> {{ Session::get('error') }}</div>
         @endif
         <div class="card">
-            <div class="card-header d-flex justify-content-between">
+            <div class="card-header bg-primary text-white d-flex justify-content-between">
                 <h4 class="m-0 fw-lighter d-inline">{{ __('Styles')}}</h4>
                 <div>
-                    <a href="{{ route('admin.style_archive') }}" class="btn btn-sm btn-danger">{{ __('View Archive') }}</a>
+                    {{-- <a href="{{ route('admin.archive') }}" class="btn btn-sm btn-danger">{{ __('View Archive') }}</a> --}}
                     <a href="{{ route('admin.create.style') }}" class="btn btn-sm btn-success">{{ __('Add new style') }}</a>
                 </div>
             </div>
@@ -25,7 +25,8 @@
                         <tr>
                             <th>{{ __('No.')}}</th>
                             <th>{{ __('Style Code')}}</th>
-                            <th>{{ __('Target Quota')}}</th>
+                            <th>{{ __('Quota Per')}}</th>
+                            <th>{{ __('Status') }}</th>
                             <th>{{ __('Author')}}</th>
                             <th>{{ __('Action')}}</th>
                         </tr>
@@ -37,16 +38,17 @@
                         @foreach ($styles as $style)
                             <tr>
                                 <td>{{ $count }}</td>
-                                <td><a href="{{ route('admin.fetch_style_model', $style->id)}}">{{ $style->style_code }}</a></td>
+                                <td><a href="{{ route('admin.show.model', $style->id) }}">{{ $style->style_code }}</a></td>
                                 <td>{{ $style->quota }}</td>
-                                <td>{{ $style->author->name }}</td>
+                                <td><span class="badge {{ $style->status ? 'bg-success' : 'bg-warning' }}">{{ $style->status ? 'Done' : 'On-progress'}}</span></td>
+                                <td>{{ $style->name }}</td>
                                 <td>
-                                    <form action="{{ route('admin.style_delete', $style->id)}}" method="POST" class="d-inline" onsubmit="return confirm('Do you want to delete this style?')">
+                                    <a href="#" class="btn btn-primary btn-sm"><i class="fa-solid fa-pen"></i></a>
+                                    <form action="{{ route('admin.delete.style', $style->id)}}" method="POST" class="d-inline" onsubmit="return confirm('Do you want to delete this style?')">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i></button>
                                     </form>
-                                    <a href="#" class="btn btn-primary btn-sm"><i class="fa-solid fa-pen"></i></a>
                                 </td>
                             </tr>
                         @php
@@ -61,12 +63,12 @@
 </div>
 
 @endsection
-@push('javascripts')
-    {{-- <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script> --}}
-    <script src="{{ asset('/vendor/datatables/jquery.dataTables.js') }}"></script>
-    <script>
-        $(document).ready( function () {
-            $('#mytable').DataTable();
-        });
-    </script>
-@endpush
+    @push('javascripts')
+        {{-- <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script> --}}
+        <script src="{{ asset('/vendor/datatables/jquery.dataTables.js') }}"></script>
+        <script>
+            $(document).ready( function () {
+                $('#mytable').DataTable();
+            });
+        </script>
+    @endpush

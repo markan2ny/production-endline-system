@@ -2,58 +2,80 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Style;
+use App\Models\Record;
+use App\Helpers\Helper;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Session;
+use App\Http\Requests\RecordStoreRequest;
 
 class GproController extends Controller
 {
 
     public function home() {
+        $login_id = Auth::user()->id;
+        // Fetch data from styles
+        $styles = DB::table('styles')->orderBy('id','desc')->get();
 
-        $styles = \App\Models\Style::orderBy('id', 'desc')->get();
+        $records = DB::select("SELECT r.*, u.name FROM records AS r RIGHT JOIN users AS u ON r.user_entry_id = u.id WHERE r.isCompleted = false");
 
-        return view('dashboard.gpro.style_table', compact('styles'));
+        // dd($records);
+                            
+
+        return view('dashboard.gpro.record', compact('styles', 'records'));
+
+    }
+    public function getModel($id) {
+        // $cities = \App\Models\Style::whereHas('models', function ($query) {
+        //     $query->whereId(request()->input('style_id', 0));
+        // })->pluck('mo', 'id');
+        $response = DB::table('model_entries')->where('style_id', $id)->get();
+
+        return response()->json($response);
+
+        // echo json_encode(DB::table('model_entries')->where('style_id', $id)->get());
+    }
+    public function store(RecordStoreRequest $request) {
+        $generatedID = Helper::IDgenerator(new Record, 'uid', 5, 'PROD' );
+
+        $model = DB::table('model_entries')->select('id', 'mo')->where('id', $request->model_id)->first();
+
+        if($request->validated()) {
+      
+                $r = DB::table('records')
+                                ->insert(
+                                    [
+                                        'uid' => $generatedID,
+                                        'bundle_tag' => $request->bundle_tag,
+                                        'date_time' => $request->date,
+                                        'operation' => $request->operation,
+                                        'operator' => $request->operator,
+                                        'model' => $model->mo,
+                                        'qty' => $request->qty,
+                                        'qty_of_bad_item' => $request->bad_qty,
+                                        'user_entry_id' => Auth::user()->id,
+                                        'status' => $request->status,
+                                        'checkedBy' => Auth::user()->name,
+                                        'model_id' => $model->id,
+                                        'created_at' => Carbon::now()
+                                    ]
+                                );
+
+            return redirect()->route('gpro.home')->with('message', 'New record has been added.');
+        }
+        return redirect()->route('gpro.home');
     }
 
-    public function record($id) {
-        // Working on style
-        $data = \App\Models\Style::where('id', $id)->get();
+    public function completedRprt($id) {
+        $d = DB::select("SELECT model_id, model, qty FROM records WHERE id = $id LIMIT 1");
 
-        $records = DB::select('SELECT r.*, u.id FROM records AS r INNER JOIN users AS u ON r.user_entry_id = u.id ORDER BY r.id DESC');
+        DB::table('model_target_quota')->insert(['model_name' => $d[0]->model, 'model_id' => $d[0]->model_id, 'today_qty' => $d[0]->qty, 'date_log' => Carbon::now()]);
 
-
-        return view('dashboard.gpro.record')->with(compact('data'))->with(compact('records'));
+        DB::table('records')->where('id', $id)->update(['isCompleted' => true]);
+      
+        return redirect()->route('gpro.home')->with('message', $id.' has been mark as completed.');
     }
-
-    public function storeRecord(Request $request, $id) {
-
-        $request->validate([
-            'date' => ['required'],
-            'bundle_tag' => ['required'],
-            'operator' => ['required'],
-            'operation' => ['required'],
-            'qty' => ['required']
-        ]);
-
-        \App\Models\Record::insert([
-            'date_time' => $request->date,
-            'bundle_tag' => $request->bundle_tag,
-            'operator' => $request->operator,
-            'operation' => $request->operation,
-            'qty' => $request->qty,
-            'user_entry_id' => Auth::user()->id,
-        ]);
-
-        return redirect()->route('gpro.record', $id)->with('success', 'New entry has been added.');
-   
-    }
-
-    public function models($id){
-
-        $models = DB::select("SELECT s.style_code, sm.* FROM style_models AS sm INNER JOIN styles AS s ON s.id = sm.style_id WHERE sm.style_id = $id");
-        return view('dashboard.gpro.get_model', compact('models'));
-
-    } 
 }

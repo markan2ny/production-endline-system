@@ -9,7 +9,7 @@ class Record extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['bundle_tag', 'operator', 'operations', 'qty'];
+    protected $fillable = ['bundle_tag', 'operator', 'operations', 'qty', 'model_id', 'date_time', 'user_entry_id', 'status', 'qty_of_bad_item', 'uid', 'checkedBy'];
 
     public function user() {
 

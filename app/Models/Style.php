@@ -20,8 +20,8 @@ class Style extends Model
     public function user() {
         return $this->hasOne(\App\Models\User::class, 'user_id', 'id');
     }
-    public function styleModel() {
-        return $this->hasMany(\App\Models\StyleModel::class, 'style_id', 'id');
+    public function models() {
+        return $this->hasMany(\App\Models\ModelEntry::class, 'style_id', 'id');
     }
 
 }

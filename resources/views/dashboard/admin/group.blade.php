@@ -10,8 +10,8 @@
                 <div class="alert alert-success"> {{ Session::get('success') }} </div>
             @endif
             <div class="card">
-                <div class="card-header d-flex justify-content-between">
-                    <h4 class="fw-lighter m-0 d-inline text-muted">{{ count( $groups ) }} - Active Group(s)</h4>
+                <div class="card-header bg-primary text-white d-flex justify-content-between">
+                    <h4 class="fw-lighter m-0 d-inline">{{ count( $groups ) }} - Active Group(s)</h4>
                     <a href="{{ route('admin.create.group') }}" class="btn btn-success btn-sm">{{ __('Add new group') }}</a>
                 </div>
                 <div class="card-body">
@@ -21,7 +21,6 @@
                                 <th>{{ __('No.')}}</th>
                                 <th>{{ __('Group Name')}}</th>
                                 <th>{{ __('Group Description')}}</th>
-                                <th>{{ __('Status') }}</th>
                                 <th>{{ __('Action')}}</th>
                             </tr>
                         </thead>
@@ -34,10 +33,13 @@
                                     <td>{{ $count }}</td>
                                     <td>{{ $group->group_name }}</td>
                                     <td>{{ $group->group_desc }}</td>
-                                    <td><span class="badge bg-success fw-light">Active</span></td>
                                     <td>
                                         <a href="#" class="btn btn-sm btn-primary"><i class="fa-solid fa-eye"></i></a>
-                                        <a href="#" class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i></a>
+                                        <form method="POST" action="{{ route('admin.delete.group', $group->id) }}" class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i></button>
+                                        </form>
                                     </td>
                                 </tr>
                             @php

@@ -16,10 +16,15 @@ class CreateRecordsTable extends Migration
         Schema::create('records', function (Blueprint $table) {
             $table->id();
             $table->integer('bundle_tag');
-            $table->string('operator');
-            $table->integer('operation');
-            $table->integer('qty');
-            $table->dateTime('date_time');
+            $table->string('model')->nullable();
+            $table->string('operator')->nullable();
+            $table->integer('operation')->nullable();
+            $table->integer('qty')->nullable();;
+            $table->string('status')->nullable();;
+            $table->integer('qty_of_bad_item')->nullable();
+            $table->date('date_time');
+            $table->boolean('isCompleted')->default(false);
+            $table->string('checkedBy')->nullable();
             $table->timestamps();
         });
     }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateStyleModelsTable extends Migration
+class CreateModelTargetQuotaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,12 @@ class CreateStyleModelsTable extends Migration
      */
     public function up()
     {
-        Schema::create('style_models', function (Blueprint $table) {
+        Schema::create('model_target_quota', function (Blueprint $table) {
             $table->id();
             $table->string('model_name');
-            $table->timestamps();
+            $table->integer('today_qty');
+            $table->unsignedBigInteger('model_id');
+            $table->foreign('model_id')->references('id')->on('model_entries')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
@@ -27,6 +29,6 @@ class CreateStyleModelsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('style_models');
+        Schema::dropIfExists('model_target_quota');
     }
 }
